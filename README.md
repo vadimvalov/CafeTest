@@ -1,6 +1,6 @@
 
 
-## **FORM OPEN BY PRESSING "Add +" BUTTON**
+## **FORM OPENS BY PRESSING "Add +" BUTTON**
 
 The idea of this project is to **immediately display** the **analysis** of the received data, and adding them is the form. 
 
