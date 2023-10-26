@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SUS</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="./input.css" />
+    <link rel="icon" href="/static/image/icon.ico" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./main.js"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <div
+      class="bg-black opacity-80 w-screen h-screen fixed top-0 left-0 hidden"
+      id="modalBackground"
+    ></div>
+    <div class="flex justify-center hidden" id="modalMenu">
+      <div
+        class="bg-white p-4 rounded-md shadow-lg absolute lg:mt-40 mt-20 mx-4"
+      >
+        <div class="flex justify-between mb-10">
+          <p class="text-center text-sm lg:text-base text-black font-bold">
+            Adding new record
+          </p>
+          <button class="text-red-500 ml-40" id="close-button">X</button>
+        </div>
+        <div class="text-black">
+          <section class="flex justify-between">
+            <p>Choose cafe:</p>
+            <div class="dropdown ml-2 rounded-xl mb-5">
+              <button
+                class="dropdown-toggle w-32 h-8 bg-gray-200"
+                id="selectACafe"
+              >
+                Select a Cafe
+              </button>
+              <ul class="dropdown-menu bg-gray-200">
+                <li data-value="Cafe 1">Cafe 1</li>
+                <li data-value="Cafe 2">Cafe 2</li>
+              </ul>
+            </div>
+          </section>
+          <section class="flex mb-5 justify-between">
+            <p>Number of customers:</p>
+            <input
+              type="text"
+              class="w-32 h-8 ml-2 bg-gray-200"
+              id="customersSelector"
+            />
+          </section>
+          <section class="flex justify-between">
+            <p class="">Average spent per customer:</p>
+            <input
+              type="text"
+              class="w-32 h-8 ml-2 bg-gray-200"
+              id="avgRecipe"
+            />
+          </section>
+          <p class="text-red-500 font-bold hidden" id="error">
+            Invalid value(s)
+          </p>
+          <button
+            class="flex mx-auto p-2 px-4 mt-5 rounded-xl bg-gray-300"
+            id="addSubmit"
+          >
+            Submit
+          </button>
+          <div
+            class="loader loader--style5 hidden flex justify-center"
+            title="4"
+            id="loading"
+          >
+            <svg
+              version="1.1"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              width="30px"
+              height="30px"
+              viewBox="0 0 9"
+              xml:space="preserve"
+            >
+              <rect x="0" y="0" width="4" height="10" fill="#333">
+                <animateTransform
+                  attributeType="xml"
+                  attributeName="transform"
+                  type="translate"
+                  values="0 0; 0 20; 0 0"
+                  begin="0"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="10" y="0" width="4" height="10" fill="#333">
+                <animateTransform
+                  attributeType="xml"
+                  attributeName="transform"
+                  type="translate"
+                  values="0 0; 0 20; 0 0"
+                  begin="0.2s"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
+              </rect>
+              <rect x="20" y="0" width="4" height="10" fill="#333">
+                <animateTransform
+                  attributeType="xml"
+                  attributeName="transform"
+                  type="translate"
+                  values="0 0; 0 20; 0 0"
+                  begin="0.4s"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
+              </rect>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row flex-wrap flex-1 flex-grow content-start">
+      <div
+        id="dash-content"
+        class="bg-gray-200 py-6 lg:py-0 w-full lg:max-w-sm flex flex-wrap content-start lg:h-screen"
+      >
+        <div class="w-1/2 lg:w-full">
+          <div
+            class="border-2 border-gray-400 hover:border-transparent hover:bg-white hover:shadow-xl rounded p-6 m-2 md:mx-10 md:my-8"
+          >
+            <div class="flex flex-col items-center">
+              <div class="flex-shrink pr-4"></div>
+              <div class="flex-1">
+                <h3 class="font-bold text-3xl text-center">$1234</h3>
+                <h5 class="font-bold text-gray-500">Total Income</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-1/2 lg:w-full">
+          <div
+            class="border-2 border-gray-400 hover:border-transparent hover:bg-white hover:shadow-xl rounded p-6 m-2 md:mx-10 md:my-8"
+          >
+            <div class="flex flex-col items-center">
+              <div class="flex-shrink pr-4"></div>
+              <div class="flex-1">
+                <h3 class="font-bold text-3xl text-center">
+                  249
+                  <span class="text-orange-500"
+                    ><i class="fas fa-exchange-alt"></i
+                  ></span>
+                </h3>
+                <h5 class="font-bold text-gray-500">Total Customers</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-1/2 lg:w-full">
+          <div
+            class="border-2 border-gray-400 hover:border-transparent hover:bg-white hover:shadow-xl rounded p-6 m-2 md:mx-10 md:my-8"
+          >
+            <div class="flex flex-col items-center">
+              <div class="flex-shrink pr-4"></div>
+              <div class="flex-1">
+                <h3 class="font-bold text-3xl text-center">12$</h3>
+                <h5 class="font-bold text-gray-500">Average Check</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-1/2 lg:w-full">
+          <div
+            class="border-2 border-gray-400 hover:border-transparent hover:bg-white hover:shadow-xl rounded p-6 m-2 md:mx-10 md:my-8"
+          >
+            <div class="flex flex-col items-center">
+              <div class="flex-shrink pr-4"></div>
+              <div class="flex-1">
+                <h3 class="font-bold text-3xl text-center">9 days</h3>
+                <h5 class="font-bold text-gray-500">Record Keeping</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="main-content" class="w-full flex-1">
+        <div class="flex flex-1 flex-wrap">
+          <div class="w-full xl:w-2/3 p-6 xl:max-w-6xl">
+            <div class="max-w-full lg:max-w-3xl xl:max-w-5xl">
+              <div class="border-b p-3 flex justify-between">
+                <h5 class="font-bold text-black">Graph</h5>
+                <div>
+                  <button
+                    class="border-2 border-gray-400 hover:border-transparent hover:bg-white hover:shadow-xl rounded px-4 p-2"
+                    id="addButton"
+                  >
+                    Add +
+                  </button>
+                  <button
+                    class="border-2 border-gray-400 hover:border-transparent hover:bg-white hover:shadow-xl rounded px-4 p-2"
+                  >
+                    2023
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-200 lg:w-[70vw] lg:h-[80vh] w-full mt-5">
+              <div class="flex">
+                <canvas id="line-chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      new Chart(document.getElementById("line-chart"), {
+        type: "line",
+        data: {
+          labels: [
+            10.18, 10.19, 10.2, 10.21, 10.22, 10.23, 10.24, 10.25, 10.26, 10.27,
+          ],
+          datasets: [
+            {
+              data: [186, 205, 1321, 1516, 2107, 2191, 3133, 3221, 4783, 5478],
+              label: "Cafe 1",
+              borderColor: "#3cba9f",
+              fill: false,
+            },
+            {
+              data: [
+                1282, 1350, 2411, 2502, 2635, 2809, 3947, 4402, 3700, 5267,
+              ],
+              label: "Cafe 2",
+              borderColor: "#e43202",
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Chart JS",
+          },
+        },
+      });
+    </script>
+  </body>
+  <script src="main.js"></script>
+  <script>
+    const dropdown = document.querySelector(".dropdown");
+    const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+    const dropdownItems = dropdownMenu.querySelectorAll("li");
+
+    dropdownToggle.addEventListener("click", () => {
+      dropdown.classList.toggle("active");
+    });
+
+    dropdownItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const selectedValue = item.getAttribute("data-value");
+        dropdownToggle.textContent = selectedValue;
+        dropdown.classList.remove("active");
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove("active");
+      }
+    });
+  </script>
+  <script>
+    const closeButton = document.getElementById("close-button");
+    const modalBackground = document.getElementById("modalBackground");
+    const modalMenu = document.getElementById("modalMenu");
+
+    closeButton.addEventListener("click", () => {
+      modalBackground.classList.toggle("hidden");
+      modalMenu.classList.toggle("hidden");
+    });
+
+    const addButton = document.getElementById("addButton");
+
+    addButton.addEventListener("click", () => {
+      modalMenu.classList.remove("hidden");
+      modalBackground.classList.remove("hidden");
+    });
+
+    const selectACafe = document.getElementById("selectACafe");
+    const customersSelector = document.getElementById("customersSelector");
+    const avgRecipe = document.getElementById("avgRecipe");
+    const addSubmit = document.getElementById("addSubmit");
+    const error = document.getElementById("error");
+    const loading = document.getElementById("loading");
+
+    addSubmit.addEventListener("click", () => {
+      error.classList.add("hidden");
+
+      if (selectACafe.textContent === "Select a Cafe") {
+        showError("Please choose a cafe.");
+        return;
+      }
+
+      const customersValue = parseInt(customersSelector.value);
+      if (isNaN(customersValue)) {
+        showError("Please enter a valid number of customers.");
+        return;
+      }
+
+      const avgRecipeValue = parseFloat(avgRecipe.value.replace(",", "."));
+      if (isNaN(avgRecipeValue)) {
+        showError("Please enter a valid average spent per customer.");
+        return;
+      }
+
+      addSubmit.classList.add("hidden");
+      loading.classList.remove("hidden");
+
+      setTimeout(() => {
+        loading.classList.add("hidden");
+        showRecorded();
+      }, 3000);
+    });
+
+    function showError(errorMessage) {
+      error.textContent = errorMessage;
+      error.classList.remove("hidden");
+    }
+
+    function showRecorded() {
+      error.textContent = "Recorded!";
+      error.classList.remove("hidden");
+      error.style.color = "green";
+
+      setTimeout(() => {
+        modalMenu.classList.add("hidden");
+        modalBackground.classList.add("hidden");
+        window.location.reload();
+      }, 3000);
+    }
+
+    function showError(errorMessage) {
+      error.textContent = errorMessage;
+      error.classList.remove("hidden");
+    }
+  </script>
+</html>

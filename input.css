@@ -1,0 +1,39 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+  background-color: #3b3b3b;
+}
+
+.dropdown-menu {
+  position: relative;
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #3b3b3b;
+}
+
+.dropdown-menu li {
+  padding: 2px;
+  cursor: pointer;
+}
+
+/* Styles for showing/hiding the dropdown menu */
+.dropdown.active .dropdown-menu {
+  display: block;
+}
+
+.loader {
+  margin: 0 0 2em;
+  height: 100px;
+  width: 20%;
+  text-align: center;
+  padding: 1em;
+  margin: 0 auto 1em;
+  display: inline-block;
+  vertical-align: top;
+}
